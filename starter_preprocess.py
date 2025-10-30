@@ -60,8 +60,8 @@ class TextPreprocessor:
         text = text.lower()
         
         # Standardize quotes and dashes
-        text = re.sub(r'[""]', '"', text)
-        text = re.sub(r'['']', "'", text)
+        text = re.sub(r'["”]', '"', text)            # <--- MODIFIED
+        text = re.sub(r"[‘’']", "'", text)           # <--- MODIFIED
         text = re.sub(r'—|–', '-', text)
         
         if preserve_sentences:
@@ -80,7 +80,7 @@ class TextPreprocessor:
     def tokenize_sentences(self, text: str) -> List[str]:
         """Split text into sentences"""
         # Simple sentence splitter (you can make this fancier with NLTK)
-        sentences = re.split(r'[.!?]+', text)
+        sentences = re.split(r'(?<=[.!?])\s+', text)    # <--- MODIFIED
         
         # Clean up and filter
         sentences = [s.strip() for s in sentences if s.strip()]
@@ -180,7 +180,6 @@ class FrequencyAnalyzer:
                 frequencies[key] = value
         
         return frequencies
-
 
 # Example usage to test your setup
 if __name__ == "__main__":
